@@ -1,0 +1,16 @@
+OLD
+JUNK
+book/
+temp/
+models/
+build/
+.pynative
+*.pyc
+*~
+*.h5
+*.o
+*.os
+*.a
+*.so
+.~*.vue
+doc/.ipynb_checkpoints/

@@ -1,0 +1,18 @@
+django
+djangorestframework
+django-rest-swagger
+django-filter
+requests
+
+## dev requirements
+sphinx
+
+## Test and quality analysis
+django-jenkins
+
+## ocr requirements
+numpy>=1.9.2
+scipy>=0.15.1
+matplotlib>=1.4.3
+Pillow>=2.7.0
+lxml>=3.5.0
