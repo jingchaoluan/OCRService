@@ -21,6 +21,6 @@ from api import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^api/', include('api.urls')),
+    url(r'^ocrapi(/)?', include('api.urls')),
     url(r'^admin/', admin.site.urls),
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

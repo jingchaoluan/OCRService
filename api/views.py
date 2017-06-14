@@ -1,24 +1,27 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.http import HttpResponse, JsonResponse, FileResponse
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import MultiPartParser
+from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import default_storage
-from rest_framework.decorators import api_view
-from wsgiref.util import FileWrapper
+from django.http import HttpResponse, FileResponse
 from django.shortcuts import render
 from django.conf import settings
+from wsgiref.util import FileWrapper
 from .models import UploadedImage
-from .ocr import ocr_exec, del_ocr_files
-import sys, os, os.path, subprocess, zipfile, StringIO
+from .serializers import UploadedImageSerializer
+from .ocr import resize_image, ocr_exec, del_service_files
+import sys, os, os.path, zipfile, StringIO
 
 
-# get the directory of the source image and output file
-srcImageDir = settings.BASE_DIR + "/data/srcImages/"
-dstDir = settings.BASE_DIR + "/data/output/"
+# Get the directory which stores all input and output files
+dataDir = settings.MEDIA_ROOT
 
 
 def index(request):
     return render(request, 'index.html')
+
 
 @csrf_exempt
 @api_view(['GET', 'POST'])
@@ -26,16 +29,31 @@ def ocrView(request, format=None):
 
     # Receive uploaded image(s)
     keys = request.data.keys()
+    if len(keys)<1:
+	return HttpResponse("Please selecting at least one image.")
     imagenames = []
-    for index, key in enumerate(keys):
-	uploadedimage = request.data.get(key)
-	imagenames.append(str(uploadedimage))
-    	default_storage.save(srcImageDir + imagenames[index], uploadedimage)
+    # One or multiple files/values in one field
+    for key in keys:
+	uploadedimages = request.data.getlist(key)
+	print("######## %d" % len(uploadedimages))
+	if len(uploadedimages) == 1:
+	    image_str = str(uploadedimages[0])
+	    imagenames.append(image_str)
+    	    default_storage.save(dataDir+"/"+image_str, uploadedimages[0])
+	elif len(uploadedimages) > 1:
+	    for image in uploadedimages:
+		image_str = str(image)
+		imagenames.append(image_str)
+		default_storage.save(dataDir+"/"+image_str, image)
 	
+    # Resize the image if its size smaller than 600*600
+    for imagename in imagenames:
+	imagepath = dataDir+"/"+imagename
+	resize_image(imagepath)
+
     # Call OCR function
-    # Files (local path) to put in the .zip
     output_files = []
-    for index, imagename in enumerate(imagenames):
+    for imagename in imagenames:
 	output_file = ocr_exec(imagename)
 	output_files.append(output_file)
 
@@ -69,11 +87,24 @@ def ocrView(request, format=None):
     	response["Content-Disposition"] = 'attachment; filename=%s' % zip_filename
     
     # Delete all files related to this service time
-    del_ocr_files()
+    del_service_files(dataDir)
 
     return response
 
     # Another way to response one file
     #return FileResponse(open(srcImageDir + "testpage.html", 'rb'))
 
+'''
+@csrf_exempt
+@api_view(['GET', 'POST'])
+@parser_classes((MultiPartParser,))
+def ocrView(request, format=None):
+    data = MultiPartParser().parse(request.data)
+    serializer = UploadedImageSerializer(data=data)
+    if serializer.is_valid():
+	serializer.save()
+	default_storage.save(srcImageDir + str(serializer.data.get('imagemodel')), serializer.data.get('imagemodel'))
+	return Response(serializer.data, status=200)
+    return Response(serializer.errors, status=400)
+'''
 

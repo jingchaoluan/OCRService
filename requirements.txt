@@ -2,13 +2,15 @@ django
 djangorestframework
 django-rest-swagger
 django-filter
-requests
 
 ## dev requirements
 sphinx
 
 ## Test and quality analysis
 django-jenkins
+
+## Image resize
+python-resize-image
 
 ## ocr requirements
 numpy>=1.9.2

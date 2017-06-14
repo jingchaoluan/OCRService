@@ -10,16 +10,16 @@
     <body>
 	<h2 align="center">OCR Micro-Service</h2>
 	<br>
+	<h4>Goal:</h4>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;Extracting text from image(s). By calling the OCR micro-service, user upload an image or multiple images, the service will return related text file(s).</p>
         <h4>Usage:</h4>
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;1. Call OCR micro-service with url: "http://10.224.18.222:8005/api/".</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;1. Call OCR micro-service with url: "http://10.2424.18.222:8000/api".</p>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;2. Input: the path of the origial image(s), and uploaded in form style.</p>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;3. Output: 
 		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For one image: output is a .txt file, including the text information of the uploaded image.
 		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For multiple images: output is a zip  file, including equal number of files to images.</p>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;4. E.g. 
-		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For one image: curl -F "file=@path_to_image" -o name_of_output_file http://10.244.18.222:8005/api/
-		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For two images: curl -F "file1=@path_to_image1" -F "file2=@path_to_image2" -o name_of_output_file http://10.244.18.222:8005/api/</p>
-	<h4 color="red">Note:</h4>
-	<p>&nbsp;&nbsp;&nbsp;&nbsp;The image(s) must bigger than 600*600 pixels.</p>
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For one image: curl -F "file=@path_to_image" -o name_of_output_file http://10.244.18.222:8000/api
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For two images: curl -F "file1=@path_to_image1" -F "file2=@path_to_image2" -o name_of_output_file http://10.244.18.222:8000/api</p>
     </body>
 </html>

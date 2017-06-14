@@ -9,3 +9,5 @@ urlpatterns = [
     #url(r'^api/(?P<filename>[\w\W]+)/$', views.ocr, name='ocr'),
     #url(r'^api/(?P<image_full_name>[\w\W]+)/$', views.ocr, name='ocr'),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
