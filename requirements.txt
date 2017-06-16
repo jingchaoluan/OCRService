@@ -5,6 +5,7 @@ django-filter
 
 ## dev requirements
 sphinx
+django-language-field
 
 ## Test and quality analysis
 django-jenkins
