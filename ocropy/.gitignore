@@ -2,7 +2,7 @@ OLD
 JUNK
 book/
 temp/
-models/
+#models/
 build/
 .pynative
 *.pyc
